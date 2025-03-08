@@ -1,0 +1,39 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+[x-cloak] {
+    display: none;
+}
+
+body {
+    background-color: #f8f9fa;
+    font-family: Arial, sans-serif;
+}
+
+.logo404{
+    max-width: 50px;
+    max-height: 50px;
+}
+.sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100vh;
+    width: 25%;
+    background-color: #f8f9fa;
+    padding: 20px;
+    overflow: hidden; /* Evita el scroll */
+}
+.content {
+    margin-left: 27%;
+    width: 70%;
+}
+.question-details {
+    display: none;
+    margin-top: 10px;
+}
+.formulario-crear{
+    display: flex;
+
+}
