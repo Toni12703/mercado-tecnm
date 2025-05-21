@@ -55,7 +55,7 @@
                     </div>
                   </div>
 
-                  <div class="mt-4">
+                  <div class="d-flex flex-row align-items-center mb-4">
                       <label for="role">Tipo de usuario</label>
                       <select name="role" id="role" required class="form-select mt-1 block w-full">
                       <option value="cliente-comprador">Comprador</option>
@@ -73,7 +73,6 @@
               </div>
               <div class="col-md-9 col-lg-6 col-xl-6">
                 <img class='logo404' src="{{ asset('images/404logo.png') }}" alt="logo404devs">
-
               </div>
             </div>
           </div>
