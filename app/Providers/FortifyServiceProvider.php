@@ -14,16 +14,17 @@ use Illuminate\Support\Str;
 use Laravel\Fortify\Fortify;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Auth\Events\Login;
-
+use App\Http\Responses\LoginResponse;
+use Laravel\Fortify\Contracts\LoginResponse as LoginResponseContract;
 
 class FortifyServiceProvider extends ServiceProvider
 {
     /**
      * Register any application services.
      */
-    public function register(): void
+    public function register()
     {
-        //
+        $this->app->singleton(LoginResponseContract::class, LoginResponse::class);
     }
 
     /**

@@ -55,6 +55,15 @@
                     </div>
                   </div>
 
+                  <div class="mt-4">
+                      <label for="role">Tipo de usuario</label>
+                      <select name="role" id="role" required class="form-select mt-1 block w-full">
+                      <option value="cliente-comprador">Comprador</option>
+                      <option value="cliente-vendedor">Vendedor</option>
+                      </select>
+                  </div>
+
+
                   <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
                     <button class="btn btn-primary btn-lg"> {{ __('Registro') }}</button>
                   </div>

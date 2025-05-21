@@ -6,32 +6,23 @@
             </a>
 
             <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                <li><a href="/" class="nav-link px-2 text-secondary">404DEV's Forms</a></li>
+                <li><a href="/" class="nav-link px-2 text-secondary">404DEV's Market</a></li>
             </ul>
-         
-            <form action="{{ route('encuesta', ['code' => '__code__']) }}" method="GET" class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" id="searchForm">
-    <input type="search" name="search_code" class="form-control form-control-dark text-bg-dark" placeholder="Buscar encuesta..." aria-label="Search" 
-           oninput="updateActionUrl(this.value)">
-    <!-- Botón de envío -->
-</form>
 
-<script>
-    // Función para actualizar la URL con el código ingresado
-    function updateActionUrl(value) {
-        const form = document.getElementById('searchForm');
-        // Cambiar la acción del formulario para incluir el valor del código ingresado
-        const newAction = `{{ url('/encuestas/encuesta') }}/${value}`;
-        form.action = newAction;
+            <!-- Formulario de búsqueda (sin route) -->
+            <form action="{{ url('/encuestas/encuesta/__code__') }}" method="GET" class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" id="searchForm">
+                <input type="search" name="search_code" class="form-control form-control-dark text-bg-dark" placeholder="Buscar código..." aria-label="Search" 
+                    oninput="updateActionUrl(this.value)">
+            </form>
 
-        // Verifica la URL que se está configurando
-        console.log("Formulario action actualizado a:", newAction);
-    }
-</script>
-
-
-
-
-
+            <script>
+                function updateActionUrl(value) {
+                    const form = document.getElementById('searchForm');
+                    const newAction = `/encuestas/encuesta/${value}`;
+                    form.action = newAction;
+                    console.log("Formulario action actualizado a:", newAction);
+                }
+            </script>
 
             <div class="text-end">
                 @if(Auth::check())
