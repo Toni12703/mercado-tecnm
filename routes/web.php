@@ -3,6 +3,11 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UsuarioController;
 
+
+Route::middleware(['auth'])->group(function () {
+    Route::resource('productos', ProductoController::class);
+});
+
 // Si aún vas a usar la gestión de usuarios
 Route::resource('usuarios', UsuarioController::class);
 
