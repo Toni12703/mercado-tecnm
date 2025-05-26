@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\ValidacionVentaController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UsuarioController;
+use App\Http\Controllers\AdminController;
 
 
 Route::middleware(['auth'])->group(function () {
@@ -44,4 +46,11 @@ Route::middleware([
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
+});
+
+Route::middleware(['auth', 'isAdmin'])->group(function () {
+    Route::get('/admin', [AdminController::class, 'index'])->name('admin.dashboard');
+});
+Route::middleware(['auth'])->group(function () {
+    Route::get('/ventas/{id}/validar', [ValidacionVentaController::class, 'validar'])->name('ventas.validar');
 });
