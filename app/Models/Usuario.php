@@ -8,11 +8,12 @@ use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Jetstream\Role;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Factories\HasFactory; // <-- Importación necesaria
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Usuario extends Authenticatable
 {
-    use HasApiTokens, HasProfilePhoto, Notifiable, TwoFactorAuthenticatable;
+    use HasApiTokens, HasFactory, HasProfilePhoto, Notifiable, TwoFactorAuthenticatable;
 
     protected $table = 'users';
     protected $primaryKey = 'id_user';
@@ -42,14 +43,13 @@ class Usuario extends Authenticatable
         return $this->belongsTo(Role::class, 'role');
     }
 
-     public function productos(): HasMany
+    public function productos(): HasMany
     {
-        return $this->hasMany(Producto::class, 'id_usuario');
+        return $this->hasMany(Producto::class, 'id_user');
     }
 
     public function ventasComoComprador(): HasMany
     {
-        return $this->hasMany(Venta::class, 'id_comprador');
+        return $this->hasMany(Venta::class, 'comprador_id');
     }
-
 }

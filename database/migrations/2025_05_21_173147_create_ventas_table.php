@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('producto_id')->constrained()->onDelete('cascade');
             $table->unsignedBigInteger('comprador_id');
             $table->foreign('comprador_id')->references('id_user')->on('users')->onDelete('cascade');
-            $table->string('ticket'); // ruta de imagen
+            $table->string('imagen_ticket')->nullable(); // o ->string('imagen_ticket') si siempre estará presente
             $table->enum('estado', ['pendiente', 'validada'])->default('pendiente');
             $table->timestamps();
         });

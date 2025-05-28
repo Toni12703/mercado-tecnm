@@ -3,10 +3,15 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory; // <- Importación necesaria
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Models\Usuario;
+use App\Models\Producto;
 
 class Venta extends Model
 {
+    use HasFactory; // <- Importante para permitir factory
+
     protected $fillable = ['producto_id', 'comprador_id', 'imagen_ticket', 'estado'];
 
     public function producto(): BelongsTo
@@ -16,6 +21,6 @@ class Venta extends Model
 
     public function comprador(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'comprador_id');
+        return $this->belongsTo(Usuario::class, 'comprador_id');
     }
 }
