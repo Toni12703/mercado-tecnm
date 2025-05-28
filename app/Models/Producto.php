@@ -9,11 +9,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Producto extends Model
 {
-    protected $fillable = ['nombre', 'descripcion', 'precio', 'id_usuario'];
+    protected $fillable = ['nombre', 'descripcion', 'precio', 'id_user'];
 
     public function vendedor(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'id_usuario');
+        return $this->belongsTo(User::class, 'id_user');
     }
 
     public function categorias(): BelongsToMany
@@ -23,6 +23,7 @@ class Producto extends Model
 
     public function ventas(): HasMany
     {
-        return $this->hasMany(Venta::class, 'id_producto');
+        return $this->hasMany(Venta::class, 'producto_id');
     }
+
 }

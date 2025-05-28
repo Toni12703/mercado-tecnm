@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Producto;
+use App\Models\Categoria;
+use App\Models\Imagen;
 
 class ProductoController extends Controller
 {
@@ -12,8 +15,9 @@ class ProductoController extends Controller
      */
     public function index()
     {
-        $productos = Producto::with('categorias', 'imagenes', 'vendedor')->get();
-        return view('productos.index', compact('productos'));
+        $productos = Producto::where('id_user', auth()->id())->get(); // O Producto::all() si no filtras
+        return view('paneles.vendedor', compact('productos'));
+    
     }
 
     /**
@@ -34,7 +38,7 @@ class ProductoController extends Controller
             'nombre' => $request->nombre,
             'descripcion' => $request->descripcion,
             'precio' => $request->precio,
-            'vendedor_id' => auth()->id(),
+            'id_user' => auth()->id(),  
         ]);
 
         $producto->categorias()->attach($request->categorias);
@@ -64,7 +68,7 @@ class ProductoController extends Controller
     public function edit(string $id)
     {
         $categorias = Categoria::all();
-        $producto->load('categorias', 'imagenes');
+        $producto = Producto::with('categorias')->findOrFail($id);
 
         return view('productos.edit', compact('producto', 'categorias'));
     }
@@ -74,20 +78,27 @@ class ProductoController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        // Validación opcional
+        $request->validate([
+            'nombre' => 'required|string|max:255',
+            'descripcion' => 'required|string',
+            'precio' => 'required|numeric',
+            'categorias' => 'array',
+        ]);
+
+        // Obtener el producto
+        $producto = Producto::findOrFail($id);
+
+        // Actualizar datos del producto
         $producto->update([
             'nombre' => $request->nombre,
             'descripcion' => $request->descripcion,
             'precio' => $request->precio,
-    ]);
+        ]);
 
-        $producto->categorias()->sync($request->categorias);
-
-        if ($request->hasFile('imagenes')) {
-            // Puedes borrar imágenes anteriores si lo deseas
-            foreach ($request->file('imagenes') as $imagen) {
-                $ruta = $imagen->store('productos', 'public');
-                $producto->imagenes()->create(['ruta' => $ruta]);
-            }
+        // Actualizar categorías si existen
+        if ($request->has('categorias')) {
+            $producto->categorias()->sync($request->categorias);
         }
 
         return redirect()->route('productos.index')->with('success', 'Producto actualizado.');
@@ -98,7 +109,11 @@ class ProductoController extends Controller
      */
     public function destroy(string $id)
     {
-        $producto->delete();
-        return redirect()->route('productos.index')->with('success', 'Producto eliminado.');
+    $producto = Producto::findOrFail($id); // Buscar el producto
+    $producto->delete();                   // Eliminarlo
+
+    return redirect()->route('productos.index')->with('success', 'Producto eliminado.');
+
     }
+
 }

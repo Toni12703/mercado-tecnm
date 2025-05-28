@@ -7,15 +7,15 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Venta extends Model
 {
-    protected $fillable = ['id_producto', 'id_comprador', 'imagen_ticket', 'estado'];
+    protected $fillable = ['producto_id', 'comprador_id', 'imagen_ticket', 'estado'];
 
     public function producto(): BelongsTo
     {
-        return $this->belongsTo(Producto::class, 'id_producto');
+        return $this->belongsTo(Producto::class, 'producto_id');
     }
 
     public function comprador(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'id_comprador');
+        return $this->belongsTo(User::class, 'comprador_id');
     }
 }

@@ -4,14 +4,13 @@ use App\Http\Controllers\ValidacionVentaController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\AdminController;
-
-
-Route::middleware(['auth'])->group(function () {
-    Route::resource('productos', ProductoController::class);
-});
+use App\Http\Controllers\ProductoController;
+use App\Http\Controllers\CategoriaController;
+use App\Http\Controllers\VentaController;
 
 // Si aún vas a usar la gestión de usuarios
 Route::resource('usuarios', UsuarioController::class);
+Route::resource('productos', ProductoController::class);
 
 // Ruta principal
 Route::get('/', function () {
@@ -38,9 +37,11 @@ Route::middleware([
         return view('paneles.comprador');
     })->middleware('auth')->name('comprador');
 
-    Route::get('/vendedor', function () {
-        return view('paneles.vendedor');
-    })->name('vendedor');
+    Route::get('/vendedor', [ProductoController::class, 'index'])->name('vendedor')->middleware(['auth', 'verified']);
+
+    Route::middleware(['auth'])->group(function () {
+        Route::get('/ventas', [VentaController::class, 'index'])->name('ventas.index');
+    });
 
     // Ruta de dashboard (si aún la usas)
     Route::get('/dashboard', function () {

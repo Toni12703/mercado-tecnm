@@ -1,84 +1,62 @@
-@extends('layouts.app')
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vendedor</title>
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> <!-- FontAwesome para las estrellas -->
+</head>
+<body>
+@include('components.header')
 
-@section('content')
-<div class="container">
-    <h1>Bienvenido Vendedor</h1>
-    <p>Aquí puedes gestionar tus productos y ver ventas.</p>
+  <h1>Bienvenido Vendedor</h1>
+  <p>Aquí puedes gestionar tus productos y ver ventas.</p>
+    <a href="{{ route('ventas.index') }}" class="btn btn-success mb-3">Ver mis ventas</a>
+    
+<h2>Agregar nuevo producto</h2>
+<form action="{{ route('productos.store') }}" method="POST" enctype="multipart/form-data" class="row g-3 align-items-center">
+  @csrf
 
-    <hr>
+  <div class="col-md-3">
+    <label for="nombre" class="form-label">Nombre:</label>
+    <input type="text" name="nombre" id="nombre" class="form-control" required>
+  </div>
 
-    {{-- Lista de productos --}}
-    <h2>Mis productos</h2>
+  <div class="col-md-4">
+    <label for="descripcion" class="form-label">Descripción:</label>
+    <textarea name="descripcion" id="descripcion" class="form-control" rows="2" required></textarea>
+  </div>
 
-    @foreach ($productos as $producto)
-        <div class="card mb-3">
-            <div class="card-body">
-                <h5>{{ $producto->nombre }}</h5>
-                <p>{{ $producto->descripcion }}</p>
-                <p><strong>Precio:</strong> ${{ $producto->precio }}</p>
-                <p><strong>Categorías:</strong> {{ $producto->categorias->pluck('nombre')->join(', ') }}</p>
+  <div class="col-md-2">
+    <label for="precio" class="form-label">Precio:</label>
+    <input type="number" step="1.00" name="precio" id="precio" class="form-control" required>
+  </div>
 
-                {{-- Imágenes --}}
-                <div class="mb-2">
-                    @foreach($producto->imagenes as $img)
-                        <img src="{{ asset('storage/' . $img->ruta) }}" width="100" class="me-2 mb-2">
-                    @endforeach
-                </div>
 
-                {{-- Botón para editar --}}
-                <form action="{{ route('productos.edit', $producto) }}" method="GET" style="display: inline-block">
-                    <button class="btn btn-sm btn-warning">Editar</button>
-                </form>
+  <div class="col-12">
+    <button type="submit" class="btn btn-primary mt-3">Agregar producto</button>
+  </div>
+</form>
 
-                {{-- Eliminar producto --}}
-                <form action="{{ route('productos.destroy', $producto) }}" method="POST" style="display: inline-block">
-                    @csrf
-                    @method('DELETE')
-                    <button class="btn btn-sm btn-danger"
-                        onclick="return confirm('¿Eliminar este producto?')">Eliminar</button>
-                </form>
-            </div>
-        </div>
-    @endforeach
+  <h2>Mis productos</h2>
 
-    <hr>
+  @foreach($productos as $producto)
+    <div style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
+      <strong>{{ $producto->nombre }}</strong><br>
+      {{ $producto->descripcion }}<br>
+      Precio: ${{ number_format($producto->precio, 2) }}<br>
 
-    {{-- Formulario de creación de producto --}}
-    <h2>Crear nuevo producto</h2>
-
-    <form action="{{ route('productos.store') }}" method="POST" enctype="multipart/form-data">
+      <form action="{{ route('productos.destroy', $producto->id) }}" method="POST" style="display:inline;">
         @csrf
+        @method('DELETE')
+        <button type="submit">Eliminar</button>
+      </form>
 
-        <div class="mb-3">
-            <label>Nombre:</label>
-            <input type="text" name="nombre" class="form-control" required>
-        </div>
+      <a href="{{ route('productos.edit', $producto->id) }}">Editar</a>
+    </div>
+  @endforeach
 
-        <div class="mb-3">
-            <label>Descripción:</label>
-            <textarea name="descripcion" class="form-control" required></textarea>
-        </div>
-
-        <div class="mb-3">
-            <label>Precio:</label>
-            <input type="number" name="precio" class="form-control" step="0.01" required>
-        </div>
-
-        <div class="mb-3">
-            <label>Categorías:</label>
-            <select name="categorias[]" class="form-control" multiple required>
-                @foreach ($categorias as $categoria)
-                    <option value="{{ $categoria->id }}">{{ $categoria->nombre }}</option>
-                @endforeach
-            </select>
-        </div>
-
-        <div class="mb-3">
-            <label>Imágenes:</label>
-            <input type="file" name="imagenes[]" class="form-control" multiple accept="image/*">
-        </div>
-
-        <button type="submit" class="btn btn-success">Guardar producto</button>
-    </form>
-</div>
-@endsection
+</body>
+</html>
