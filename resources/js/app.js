@@ -1,4 +1,4 @@
-import 'bootstrap/dist/css/bootstrap.min.css';
+import '../../css/app.css';
 import 'bootstrap';
 import 'datatables.net-bs5'; //datatable
 import 'datatables.net';
