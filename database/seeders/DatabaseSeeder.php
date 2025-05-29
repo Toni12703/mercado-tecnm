@@ -9,6 +9,8 @@ use App\Models\Categoria;
 use App\Models\Venta;
 use App\Models\Imagen;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+
 
 class DatabaseSeeder extends Seeder
 {
@@ -22,6 +24,13 @@ class DatabaseSeeder extends Seeder
             Categoria::create(['nombre' => 'Juguetes y Niños']),
             Categoria::create(['nombre' => 'Ofertas']),
         ]);
+
+        \App\Models\Usuario::create([
+    'name' => 'Administrador',
+    'email' => 'admin@admin.com',
+    'password' => Hash::make('admin123'), // contraseña cifrada
+    'role' => 'admin',
+]);
 
         $nombresCompradores = [
             'Luis Hernández', 'Ana Pérez', 'Carlos Ramírez', 'María López', 'José Martínez',

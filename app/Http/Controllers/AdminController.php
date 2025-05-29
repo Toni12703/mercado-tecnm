@@ -6,11 +6,37 @@ use App\Http\Controllers\Controller;
 use App\Models\Usuario;
 use App\Models\Producto;
 use App\Models\Categoria;
+use Illuminate\Support\Facades\Hash;
 use App\Models\Venta;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+
 
 class AdminController extends Controller
 {
+    public function createGerente()
+    {
+        return view('admin.usuarios.create-gerente');
+    }
+
+    public function storeGerente(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:usuarios,email',
+            'password' => 'required|string|min:6|confirmed',
+        ]);
+
+        Usuario::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'role' => 'gerente',
+        ]);
+
+        return redirect()->route('admin.dashboard')->with('success', 'Gerente creado correctamente');
+    }
+    
     public function index()
     {
         // Total de usuarios

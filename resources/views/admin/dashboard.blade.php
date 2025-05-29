@@ -3,7 +3,15 @@
 @section('content')
 <div class="container">
     <h1 class="text-2xl font-bold mb-4">Dashboard Administrativo</h1>
-    
+
+    {{-- Botón para ir a crear gerente --}}
+    <div class="mb-6">
+        <a href="{{ route('admin.gerentes.create') }}" 
+           class="inline-block bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
+            ➕ Crear Usuario Gerente
+        </a>
+    </div>
+
     <ul class="space-y-2">
         <li><strong>Total de Usuarios:</strong> {{ $totalUsuarios }}</li>
         <li><strong>Vendedores:</strong> {{ $totalVendedores }}</li>

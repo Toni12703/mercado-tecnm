@@ -17,4 +17,11 @@ class VentaController extends Controller
 
         return view('ventas.index', compact('ventas'));
     }
+
+    public function comprar($productoId)
+{
+    $producto = \App\Models\Producto::findOrFail($productoId);
+    return view('compras.subir_ticket', compact('producto'));
+}
+
 }

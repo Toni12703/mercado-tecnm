@@ -116,4 +116,22 @@ class ProductoController extends Controller
 
     }
 
+    public function mostrarPublicamente(Request $request)
+{
+    $productos = Producto::with('categorias');
+
+    if ($request->filled('categoria')) {
+        $productos->whereHas('categorias', function ($query) use ($request) {
+            $query->where('categorias.id', $request->categoria); // 🟢 Aquí es clave
+        });
+    }
+
+    return view('index', [
+        'productos' => $productos->get(),
+        'categorias' => Categoria::all(),
+    ]);
+}
+
+
+
 }

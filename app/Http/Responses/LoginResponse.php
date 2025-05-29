@@ -11,11 +11,10 @@ class LoginResponse implements LoginResponseContract
         $user = $request->user();
 
         $redirect = match ($user->role) {
-            'administrador' => '/admin',
-            'gerente' => '/gerente',
-            'cliente-comprador' => '/comprador',
-            'cliente-vendedor' => '/vendedor',
-            default => '/',
+            'admin' => route('admin.dashboard'),
+            'cliente-comprador' => route('comprador'),
+            'cliente-vendedor' => route('vendedor'),
+            default => route('index'),
         };
 
         return redirect()->intended($redirect);
