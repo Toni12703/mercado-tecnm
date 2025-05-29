@@ -7,6 +7,8 @@ use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\VentaController;
 use App\Http\Controllers\ValidacionVentaController;
+use App\Http\Controllers\GerenteController;
+
 
 // 🟢 Rutas públicas
 Route::get('/', [ProductoController::class, 'mostrarPublicamente'])->name('index');
@@ -23,6 +25,7 @@ Route::get('/redirect-by-role', function () {
         'admin' => redirect()->route('admin.dashboard'),
         'cliente-comprador' => redirect()->route('comprador'),
         'cliente-vendedor' => redirect()->route('vendedor'),
+        'gerente' => redirect() -> route('gerente.ventas'),
         default => redirect()->route('index'),
     };
 })->middleware('auth')->name('redirect.by.role');
@@ -40,7 +43,7 @@ Route::middleware([
     })->name('admin');
 
     Route::get('/gerente', function () {
-        return view('paneles.gerente');
+        return redirect()->route('gerente.ventas');
     })->name('gerente');
 
     Route::get('/comprador', function () {
@@ -62,4 +65,7 @@ Route::middleware(['auth', 'isAdmin'])->group(function () {
     Route::get('/admin', [AdminController::class, 'index'])->name('admin.dashboard');
     Route::get('/admin/usuarios/crear-gerente', [AdminController::class, 'createGerente'])->name('admin.gerentes.create');
     Route::post('/admin/usuarios/guardar-gerente', [AdminController::class, 'storeGerente'])->name('admin.gerentes.store');
+});
+Route::middleware(['auth', 'role:gerente'])->group(function () {
+    Route::get('/gerente/ventas', [GerenteController::class, 'ventas'])->name('gerente.ventas');
 });
